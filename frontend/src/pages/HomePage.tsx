@@ -5,8 +5,11 @@ import { Student } from "../types";
 import styles from "./HomePage.module.css";
 import { cleanStudentPayload } from "../utils/cleanStudentPayload";
 import { useStudents } from "../hooks/useStudents";
+import SearchBar from "../components/SearchBar";
 
 const HomePage: React.FC = () => {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
   const {
     students,
     isLoading,
@@ -15,7 +18,7 @@ const HomePage: React.FC = () => {
     createStudent,
     updateStudent,
     deleteStudent,
-  } = useStudents();
+  } = useStudents(searchQuery);
 
   const [editingStudent, setEditingStudent] = useState<Partial<Student> | null>(
     null
@@ -50,6 +53,10 @@ const HomePage: React.FC = () => {
     setEditingStudent(student);
   };
 
+  const handleSearchSubmit = () => {
+    setSearchQuery(searchTerm);
+  };
+
   if (isLoading) {
     return <p className={styles.loadingText}>Loading students...</p>;
   }
@@ -65,6 +72,11 @@ const HomePage: React.FC = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Student Management System</h1>
+      <SearchBar
+        value={searchTerm}
+        onChange={setSearchTerm}
+        onSubmit={handleSearchSubmit}
+      />
 
       <section className={styles.sectionContainer}>
         <div className={styles.formContainer}>
