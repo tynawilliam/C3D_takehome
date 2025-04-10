@@ -1,6 +1,10 @@
 .container {
-  margin: 0 auto;
-  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .title {
@@ -20,12 +24,15 @@
 
 .sectionContainer {
   display: flex;
+  flex: 1;
+  overflow: hidden;
   align-items: flex-start;
   justify-content: center;
   gap: 2rem;
+  width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
 }
 
 .formContainer {

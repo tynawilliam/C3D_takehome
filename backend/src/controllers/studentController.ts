@@ -17,7 +17,10 @@ export class StudentController {
   });
 
   public getAllStudents = asyncHandler(async (req: Request, res: Response) => {
-    const students = await studentService.getAllStudents();
+    const { search } = req.query;
+    const students = await studentService.getAllStudents({
+      search: search as string,
+    });
     res.status(200).json(students);
   });
 

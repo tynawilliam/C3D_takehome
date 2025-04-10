@@ -6,6 +6,10 @@ import db from "../db/knex";
 import { Student, CreateStudentDTO, UpdateStudentDTO } from "types";
 import { AppError, ConflictError, NotFoundError } from "../errors/AppErrors";
 
+type ListOptions = {
+  search?: string;
+};
+
 export class StudentService {
   public async createStudent(data: CreateStudentDTO): Promise<Student> {
     validateCreateStudentData(data);
@@ -22,8 +26,17 @@ export class StudentService {
     }
   }
 
-  public async getAllStudents(): Promise<Student[]> {
-    const students = await db("students");
+  public async getAllStudents(options: ListOptions = {}): Promise<Student[]> {
+    const { search } = options;
+    let query = db("students").orderBy("name", "asc");
+    if (search && search.trim()) {
+      const formattedSearch = `%${search.trim()}%`;
+      query = query
+        .where("name", "like", formattedSearch)
+        .orWhere("email", "like", formattedSearch);
+    }
+    const students = await query;
+
     return students;
   }
 

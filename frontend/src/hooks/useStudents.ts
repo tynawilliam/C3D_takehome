@@ -7,7 +7,7 @@ import {
   deleteStudent,
 } from "../api/studentService";
 
-export function useStudents() {
+export function useStudents(searchTerm: string) {
   const queryClient = useQueryClient();
 
   const {
@@ -16,8 +16,9 @@ export function useStudents() {
     isLoading,
     isError,
   } = useQuery<Student[], Error>({
-    queryKey: ["students"],
-    queryFn: getStudents,
+    queryKey: ["students", searchTerm],
+    queryFn: () => getStudents(searchTerm),
+    enabled: searchTerm.trim().length === 0 ? true : !!searchTerm,
   });
 
   const createMutation = useMutation({

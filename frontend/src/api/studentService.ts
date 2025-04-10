@@ -1,8 +1,10 @@
 import { Student } from "../types";
 import axios from "./axiosConfig";
 
-export async function getStudents(): Promise<Student[]> {
-  const response = await axios.get("/api/students");
+export async function getStudents(searchTerm = ""): Promise<Student[]> {
+  const query = searchTerm ? `?search=${encodeURIComponent(searchTerm)}` : "";
+  const response = await axios.get(`/api/students${query}`);
+
   return response.data.map((student: any) => ({
     ...student,
     gpa:
