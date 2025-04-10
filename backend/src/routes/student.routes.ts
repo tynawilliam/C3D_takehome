@@ -5,8 +5,12 @@ const router = Router();
 
 router.post("/", studentController.createStudent);
 router.get("/", studentController.getAllStudents);
-router.get("/:id", studentController.getStudentById);
-router.put("/:id", studentController.updateStudent);
-router.delete("/:id", studentController.deleteStudent);
+
+//add search route
+router.get("/search", studentController.searchStudents);
+
+router.get("/:id([0-9]+)", studentController.getStudentById);
+router.put("/:id(\\d+)", studentController.updateStudent);
+router.delete("/:id(\\d+)", studentController.deleteStudent);
 
 export default router;

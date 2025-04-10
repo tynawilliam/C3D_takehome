@@ -66,6 +66,25 @@ export class StudentService {
       throw new NotFoundError("Student not found");
     }
   }
+
+  public async searchStudents(searchTerm: string): Promise<Student[]> {
+    if (!searchTerm || searchTerm.trim() === "") {
+      return this.getAllStudents();
+    }
+
+    const formattedTerm = `%${searchTerm}%`;
+
+    try {
+      const students = await db("students")
+        .where("name", "like", formattedTerm)
+        .orWhere("email", "like", formattedTerm)
+        .orderBy("name", "asc");
+
+      return students;
+    } catch (error) {
+      throw new AppError("Failed to search students");
+    }
+  }
 }
 
 export const studentService = new StudentService();

@@ -58,6 +58,12 @@ export class StudentController {
     await studentService.deleteStudent(id);
     res.status(204).send();
   });
+
+  public searchStudents = asyncHandler(async (req: Request, res: Response) => {
+    const searchTerm = req.query.q as string;
+    const students = await studentService.searchStudents(searchTerm);
+    res.status(200).json(students);
+  });
 }
 
 export const studentController = new StudentController();
