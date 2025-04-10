@@ -1,0 +1,47 @@
+.container {
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #4f46e5;
+}
+
+.loadingText {
+  color: #4b5563;
+}
+
+.errorText {
+  color: #dc2626;
+}
+
+.sectionContainer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.formContainer {
+  flex: 1;
+  max-width: 400px;
+}
+
+.listContainer {
+  flex: 2;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+
+.sectionTitle {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
