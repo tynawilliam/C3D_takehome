@@ -141,7 +141,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
         <input
           id="gpa"
           type="number"
-          step="0.1"
+          step="0.01"
           {...register("gpa", {
             min: { value: 0, message: "Minimum GPA is 0.0" },
             max: { value: 4.0, message: "Maximum GPA is 4.0" },
