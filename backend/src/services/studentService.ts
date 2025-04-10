@@ -6,6 +6,10 @@ import db from "../db/knex";
 import { Student, CreateStudentDTO, UpdateStudentDTO } from "types";
 import { AppError, ConflictError, NotFoundError } from "../errors/AppErrors";
 
+type ListOptions = {
+  search?: string;
+};
+
 export class StudentService {
   public async createStudent(data: CreateStudentDTO): Promise<Student> {
     validateCreateStudentData(data);
@@ -22,8 +26,17 @@ export class StudentService {
     }
   }
 
-  public async getAllStudents(): Promise<Student[]> {
-    const students = await db("students");
+  public async getAllStudents(options: ListOptions = {}): Promise<Student[]> {
+    const { search } = options;
+    let query = db("students").orderBy("name", "asc");
+    if (search && search.trim()) {
+      const formattedSearch = `%${search.trim()}%`;
+      query = query
+        .where("name", "like", formattedSearch)
+        .orWhere("email", "like", formattedSearch);
+    }
+    const students = await query;
+
     return students;
   }
 
@@ -64,25 +77,6 @@ export class StudentService {
     const deleted = await db("students").where({ id }).del();
     if (deleted === 0) {
       throw new NotFoundError("Student not found");
-    }
-  }
-
-  public async searchStudents(searchTerm: string): Promise<Student[]> {
-    if (!searchTerm || searchTerm.trim() === "") {
-      return this.getAllStudents();
-    }
-
-    const formattedTerm = `%${searchTerm}%`;
-
-    try {
-      const students = await db("students")
-        .where("name", "like", formattedTerm)
-        .orWhere("email", "like", formattedTerm)
-        .orderBy("name", "asc");
-
-      return students;
-    } catch (error) {
-      throw new AppError("Failed to search students");
     }
   }
 }
