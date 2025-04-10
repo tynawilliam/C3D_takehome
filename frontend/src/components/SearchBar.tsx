@@ -15,6 +15,8 @@ const SearchBar: React.FC<Props> = ({ value, onChange, onSubmit }) => {
         onSubmit();
       }}
       className={styles.wrapper}
+      role="form"
+      data-testid="search-form"
     >
       <input
         type="search"
