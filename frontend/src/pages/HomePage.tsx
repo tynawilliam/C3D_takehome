@@ -23,10 +23,22 @@ const HomePage: React.FC = () => {
   const [editingStudent, setEditingStudent] = useState<Partial<Student> | null>(
     null
   );
+  const [formError, setFormError] = useState<string | null>(null);
 
-  const handleCreate = (studentData: Partial<Student>) => {
-    const createPayload = cleanStudentPayload(studentData);
-    createStudent(createPayload);
+  const handleCreate = async (studentData: Partial<Student>) => {
+    const payload = cleanStudentPayload(studentData);
+    try {
+      await createStudent(payload, {
+        onSuccess: () => setFormError(null),
+        onError: (error: any) => {
+          const message =
+            error.response?.data?.error || "An unexpected error occurred";
+          setFormError(message);
+        },
+      });
+    } catch (err) {
+      setFormError("Unexpected error");
+    }
   };
 
   const handleUpdate = (studentData: Partial<Student>) => {
@@ -86,6 +98,7 @@ const HomePage: React.FC = () => {
           <StudentForm
             initialValues={editingStudent || undefined}
             onSubmit={editingStudent ? handleUpdate : handleCreate}
+            error={formError ?? undefined}
           />
         </div>
 
